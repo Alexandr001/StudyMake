@@ -1,20 +1,25 @@
-# Простой make-file без переменных, для релиза и дебага
+# Усложненный make-file.  Введены переменные для параметров компиляции и исполняемых файлов
 
 .PHONY: all debug release clean
 
-all: debug release
+RELEASE_FLAGS = -O2 -Wall -DNDEBUG
+DEBUG_FLAGS   = -g -O0 -Wall
+RELEASE_EXEC  = hello
+DEBUG_EXEC    = hello-dbg
+SOURCE        = hello.cpp
 
-debug: hello-dbg
+all: $(SOURSE) hello
+
+debug: $(DEBUG_EXEC)
 
 hello-dbg: hello.cpp
-	g++ -g -O0 hello.cpp -o hello-dbg -Wall
+	g++ $(DEBUG_FLAGS) hello.cpp -o $(DEBUG_EXEC) 
 
-release: hello
+release: $(RELEASE_EXEC)
 
 hello: hello.cpp
-	g++ -O2 hello.cpp -o hello -DNDEBUG -Wall
+	g++ $(RELEASE_FLAGS) hello.cpp -o $(RELEASE_EXEC)
 
 clean:
-	rm -rf *.o hello-dbg *.o hello
-
+	rm -f $(RELEASE_EXEC) $(DEBUG_EXEC)
 
